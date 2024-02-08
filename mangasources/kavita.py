@@ -70,8 +70,8 @@ def processing_chapters(url):
     print(url)
     login()
     r = kavitaSession.get(url)
-    print(r.text)
     chapters = r.json()['chapters'] + r.json()['specials']
+    print(chapters)
     for v in r.json()['volumes']:
         for c in v['chapters']:
             c['title'] = c['titleName']

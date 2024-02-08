@@ -953,11 +953,6 @@ class Ui_MainWindowImpl(mangareader.Ui_MainWindow):
     def homepage_fun(self):
         self.dockbar.setVisible(False)
         self.pagedock.setVisible(False)
-        self.bookmarklist.setModel(None)
-        model = TestListModel2(self.bookmarklist)
-        model.inputData(self.bookmarks)
-        self.bookmarklist.setModel(model)       
-        self.bookmarklist.clicked.connect(self.saveRes3)
         if len(self.bookmarks) > 0:
             self.no_bookmark.setVisible(False)
         self.stackedwidget.setCurrentIndex(3)        
