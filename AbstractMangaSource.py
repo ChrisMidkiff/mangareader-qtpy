@@ -1,30 +1,24 @@
-import mangasources 
+import mangasources
+
+
 class AbstractMangaSource:
-  
+
     @staticmethod
     def getSearchResult(current_source, text):
-         return getattr(mangasources, str(current_source)).getSearchResult(text)
-        
+        return getattr(mangasources, str(current_source)).getSearchResult(text)
+
     @staticmethod
     def listchapters(url):
-        for site in mangasources.sourcelist.manga_sites():   
-         if site in url: 
-          return getattr(mangasources, site).processing_chapters(url)
+        return getattr(mangasources, 'kavita').processing_chapters(url)
 
     @staticmethod
     def listchapterimages(url):
-        for site in mangasources.sourcelist.manga_sites():   
-         if site in url: 
-          return getattr(mangasources, site).image_lists(url)
+        return getattr(mangasources, 'kavita').image_lists(url)
 
     @staticmethod
     def getIconFromUrl(url):
-        for site in mangasources.sourcelist.manga_sites():   
-         if site in url: 
-          return getattr(mangasources, site).getmangaiconfromurl(url)
+        return getattr(mangasources, 'kavita').getmangaiconfromurl(url)
 
     @staticmethod
     def getImageHeader(url):
-        for site in mangasources.sourcelist.manga_sites():   
-         if site in url: 
-          return getattr(mangasources, site).getImageHeader()
+        return {}

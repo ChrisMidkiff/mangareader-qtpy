@@ -10,7 +10,7 @@
     <x>0</x>
     <y>0</y>
     <width>1071</width>
-    <height>1350</height>
+    <height>1440</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -29,7 +29,7 @@
       <x>0</x>
       <y>0</y>
       <width>1072</width>
-      <height>1350</height>
+      <height>1440</height>
      </rect>
     </property>
     <property name="styleSheet">
@@ -105,7 +105,7 @@
         <x>0</x>
         <y>0</y>
         <width>1071</width>
-        <height>1291</height>
+        <height>1440</height>
        </rect>
       </property>
       <property name="styleSheet">
@@ -125,7 +125,7 @@
          <x>0</x>
          <y>0</y>
          <width>1072</width>
-         <height>1290</height>
+         <height>1440</height>
         </rect>
        </property>
        <property name="text">
@@ -137,6 +137,101 @@
        <property name="scaledContents">
         <bool>false</bool>
        </property>
+      </widget>
+      <widget class="QWidget" name="pagedock" native="true">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>1345</y>
+         <width>1071</width>
+         <height>91</height>
+        </rect>
+       </property>
+       <widget class="QWidget" name="widget_2" native="true">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>0</y>
+          <width>1071</width>
+          <height>91</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QWidget{
+background-color: white;
+border : 2px solid #000000
+}</string>
+        </property>
+        <widget class="QLabel" name="pagecount">
+         <property name="geometry">
+          <rect>
+           <x>22</x>
+           <y>5</y>
+           <width>111</width>
+           <height>61</height>
+          </rect>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QWidget{
+border: 0px
+}</string>
+         </property>
+         <property name="text">
+          <string>1/10</string>
+         </property>
+        </widget>
+        <widget class="QSlider" name="pageslider">
+         <property name="geometry">
+          <rect>
+           <x>160</x>
+           <y>31</y>
+           <width>891</width>
+           <height>21</height>
+          </rect>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QWidget{
+   border : 0px
+}
+QSlider::groove:horizontal { 
+	background-color: white;
+	border: 1px solid #424242; 
+	height: 15px; 
+	border-radius: 4px;
+}
+
+QSlider::handle:horizontal { 
+	background-color: black; 
+	border: 2px solid black; 
+	width: 16px; 
+	height: 30px; 
+	line-height: 20px; 
+	margin-top: -5px; 
+	margin-bottom: -5px; 
+	border-radius: 10px; 
+}
+
+QSlider::handle:horizontal:hover { 
+	border-radius: 10px;
+}</string>
+         </property>
+         <property name="maximum">
+          <number>24</number>
+         </property>
+         <property name="pageStep">
+          <number>1</number>
+         </property>
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="tickPosition">
+          <enum>QSlider::TicksAbove</enum>
+         </property>
+         <property name="tickInterval">
+          <number>1</number>
+         </property>
+        </widget>
+       </widget>
       </widget>
      </widget>
      <widget class="QWidget" name="dockbar" native="true">
@@ -342,106 +437,10 @@ QPushButton{
        </layout>
       </widget>
      </widget>
-     <widget class="QWidget" name="pagedock" native="true">
-      <property name="geometry">
-       <rect>
-        <x>0</x>
-        <y>1200</y>
-        <width>1071</width>
-        <height>91</height>
-       </rect>
-      </property>
-      <widget class="QWidget" name="widget_2" native="true">
-       <property name="geometry">
-        <rect>
-         <x>0</x>
-         <y>0</y>
-         <width>1071</width>
-         <height>91</height>
-        </rect>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">QWidget{
-background-color: white;
-border : 2px solid #000000
-}</string>
-       </property>
-       <widget class="QLabel" name="pagecount">
-        <property name="geometry">
-         <rect>
-          <x>22</x>
-          <y>5</y>
-          <width>111</width>
-          <height>61</height>
-         </rect>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">QWidget{
-border: 0px
-}</string>
-        </property>
-        <property name="text">
-         <string>1/10</string>
-        </property>
-       </widget>
-       <widget class="QSlider" name="pageslider">
-        <property name="geometry">
-         <rect>
-          <x>160</x>
-          <y>31</y>
-          <width>891</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">QWidget{
-   border : 0px
-}
-QSlider::groove:horizontal { 
-	background-color: white;
-	border: 1px solid #424242; 
-	height: 15px; 
-	border-radius: 4px;
-}
-
-QSlider::handle:horizontal { 
-	background-color: black; 
-	border: 2px solid black; 
-	width: 16px; 
-	height: 30px; 
-	line-height: 20px; 
-	margin-top: -5px; 
-	margin-bottom: -5px; 
-	border-radius: 10px; 
-}
-
-QSlider::handle:horizontal:hover { 
-	border-radius: 10px;
-}</string>
-        </property>
-        <property name="maximum">
-         <number>24</number>
-        </property>
-        <property name="pageStep">
-         <number>1</number>
-        </property>
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="tickPosition">
-         <enum>QSlider::TicksAbove</enum>
-        </property>
-        <property name="tickInterval">
-         <number>1</number>
-        </property>
-       </widget>
-      </widget>
-     </widget>
      <zorder>bg1</zorder>
      <zorder>dockbutton</zorder>
      <zorder>next</zorder>
      <zorder>prev</zorder>
-     <zorder>pagedock</zorder>
      <zorder>dockbar</zorder>
     </widget>
     <widget class="QWidget" name="centralwidget2">
@@ -454,7 +453,7 @@ QSlider::handle:horizontal:hover {
         <x>0</x>
         <y>-10</y>
         <width>1081</width>
-        <height>1301</height>
+        <height>1440</height>
        </rect>
       </property>
       <property name="styleSheet">
@@ -1751,27 +1750,6 @@ border :0}</string>
     </widget>
    </widget>
   </widget>
-  <widget class="QMenuBar" name="menubar">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>1071</width>
-     <height>26</height>
-    </rect>
-   </property>
-   <widget class="QMenu" name="menuFile">
-    <property name="title">
-     <string>File</string>
-    </property>
-    <addaction name="actionExit"/>
-    <addaction name="actionComics"/>
-    <addaction name="actionReader"/>
-    <addaction name="actionHome"/>
-   </widget>
-   <addaction name="menuFile"/>
-  </widget>
-  <widget class="QStatusBar" name="statusbar"/>
   <action name="actionExit">
    <property name="text">
     <string>Exit</string>

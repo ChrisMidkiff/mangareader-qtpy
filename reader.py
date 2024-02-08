@@ -16,8 +16,6 @@ urls_expire_after = {
     'manganelo.tv/mangaimages': 1800,
     'cm.blazefast.co': 3600,
     'nhanhtruyen.net': 3600,
-    'api.mangadex.org': 0,
-    'mangapill.com': 0,
     '*': 0,
 }
 requests_cache.install_cache('demo_cache',urls_expire_after=urls_expire_after)
@@ -31,18 +29,14 @@ try:
 
     print model
     if model != None:
-     if model == "KindlePaperWhite" or model == "KindlePaperWhite2":
-      # 212 ppi, 6 inch, 1024*768   - not supported for now
+     if model.find("KindleOasis") != -1:
+      import mangareader_oasis as mangareader
+     elif model == "KindlePaperWhite" or model == "KindlePaperWhite2":
       print "Unsupported PW1 or PW2"
-      exit()
-     elif model.find("KindlePaperWhite") != -1 or model.find("KindleVoyage") != -1 or model == ("KindleOasis") :
-      # 300 ppi , 6 inch , 1448*1072
+      exit() 
+     elif model.find("KindlePaperWhite") != -1 or model.find("KindleVoyage") != -1:
       import mangareader as mangareader
-     elif model.find("KindleOasis") != -1:
-      # 300 ppi, 7-inch, 1680*1264   
-      import mangareader_oasis as mangareader 
      else :
-      # rest should be 167 ppi , 800*600    
       print "Unsupported"
       exit()         
 except Exception as e:
@@ -163,15 +157,14 @@ class MangaPageWorker(QtCore.QObject):
     @QtCore.pyqtSlot()
     def processing_image( self, images, page, url):
         #start = time.time()
-        hdr = AbstractMangaSource.AbstractMangaSource.getImageHeader(url)
+        hdr = {'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.64 Safari/537.11',
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+        'Accept-Charset': 'ISO-8859-1,utf-8;q=0.7,*;q=0.3',
+        'Accept-Encoding': 'none',
+        'Accept-Language': 'en-US,en;q=0.8',
+        'Connection': 'keep-alive', 'Referer': 'http://www.nettruyentop.com/'}
         image0 = None
-        try:
-         image0 = requests.get(images[page]['data-src'],headers=hdr, timeout = 15)
-        except: 
-         try:   
-          image0 = requests.get(images[page]['src'],headers=hdr, timeout = 15, stream=True)
-         except: 
-          image0 = requests.get(images[page],headers=hdr, timeout = 15)    
+        image0 = requests.get(images[page], timeout = 15, stream=True)
         image = QtGui.QImage()
         image.loadFromData(image0.content)
         self.loadimage.emit(image, url, page) 
@@ -200,19 +193,18 @@ class Ui_MainWindowImpl(mangareader.Ui_MainWindow):
     bookmarks = []
     tmpmanga = ""
     selmanga = ""
-    currentsource = "manganelo"
+    currentsource = "kavita"
     url = ''
-    hdr = AbstractMangaSource.AbstractMangaSource.getImageHeader(url)
-    # {'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.64 Safari/537.11',
-    #     'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-    #     'Accept-Charset': 'ISO-8859-1,utf-8;q=0.7,*;q=0.3',
-    #     'Accept-Encoding': 'none',
-    #     'Accept-Language': 'en-US,en;q=0.8',
-    #     'Connection': 'keep-alive',
-    #     'Referer': 'http://www.nettruyentop.com/'}
-      
+    hdr = {'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.64 Safari/537.11',
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+        'Accept-Charset': 'ISO-8859-1,utf-8;q=0.7,*;q=0.3',
+        'Accept-Encoding': 'none',
+        'Accept-Language': 'en-US,en;q=0.8',
+        'Connection': 'keep-alive',
+        'Referer': 'http://www.nettruyentop.com/'}
     def setupUi(self, MainWindow):
         super(Ui_MainWindowImpl, self).setupUi(MainWindow)
+        self.stackedwidget.setCurrentIndex(3)
         self.next.setStyleSheet("border : 0; background-color: transparent;")
         self.prev.setStyleSheet("border : 0; background-color: transparent;")
         self.dockbar.setVisible(False)
@@ -721,18 +713,15 @@ class Ui_MainWindowImpl(mangareader.Ui_MainWindow):
         icon = data[3]
         self.stackedwidget.setCurrentIndex(2)
         self.infotext.setText(title)
-        self.hdr = AbstractMangaSource.AbstractMangaSource.getImageHeader(url)
-        print("icon",icon, self.hdr)
         infoimage0 = requests.get(icon,headers=self.hdr, timeout = 15)    
         image = QtGui.QImage()
         image.loadFromData(infoimage0.content)
         self.infoimage.setPixmap(QtGui.QPixmap(image)) 
         combined = title +"y:_$W|~_:q"+self.tmpurl
-        try:
-            if combined in self.bookmarks:
-                self.bookmarkbt2.setText("Remove bookmarks")
-            else: self.bookmarkbt2.setText("Add to bookmarks")
-        except: pass
+        if combined in self.bookmarks:
+         self.bookmarkbt2.setText("Remove bookmarks")
+        else: 
+         self.bookmarkbt2.setText("Add to bookmarks")
         try:
          self.thread.terminate()
          self.infochapters.setModel(None)
@@ -743,7 +732,6 @@ class Ui_MainWindowImpl(mangareader.Ui_MainWindow):
         self.worker = Worker()
         self.thread = QtCore.QThread()
         self.worker.moveToThread(self.thread) 
-        print('url', url)
         self.thread.started.connect(lambda: self.worker.processing_chapters(url))     
         self.worker.load_chapters.connect(self.load_list)
         self.thread.start()
@@ -753,14 +741,13 @@ class Ui_MainWindowImpl(mangareader.Ui_MainWindow):
         self.lastsel2 = (rawurl)
         self.bookmarkbt2.setText("Remove bookmarks")   
         url = rawurl
-        
+        print(url)
         icon = AbstractMangaSource.AbstractMangaSource.getIconFromUrl(url)
      
         self.stackedwidget.setCurrentIndex(2)
         self.infotext.setText(title)
         if icon != "":
-         try:
-          print("icon",icon, self.hdr) 
+         try:   
           infoimage0 = requests.get(icon,headers=self.hdr, timeout = 10)    
           image = QtGui.QImage()
           image.loadFromData(infoimage0.content)
@@ -849,14 +836,7 @@ class Ui_MainWindowImpl(mangareader.Ui_MainWindow):
         print(self.nextchapter_url)
         # load first image #################
         self.page = 0
-        self.hdr = AbstractMangaSource.AbstractMangaSource.getImageHeader(url)
-        try:
-         self.image0 = requests.get(self.images[0]['data-src'],headers=self.hdr, timeout = 15, stream=True)
-        except: 
-         try:   
-          self.image0 = requests.get(self.images[0]['src'],headers=self.hdr, timeout = 15, stream=True)
-         except: 
-          self.image0 = requests.get(self.images[0],headers=self.hdr, timeout = 15, stream=True)        
+        self.image0 = requests.get(self.images[0], timeout = 15, stream=True)
         image = QtGui.QImage()
         image.loadFromData(self.image0.content)
         self.image0.close()

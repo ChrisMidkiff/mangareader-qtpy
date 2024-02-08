@@ -16,11 +16,13 @@ except AttributeError:
 
 try:
     _encoding = QtGui.QApplication.UnicodeUTF8
+
     def _translate(context, text, disambig):
         return QtGui.QApplication.translate(context, text, disambig, _encoding)
 except AttributeError:
     def _translate(context, text, disambig):
         return QtGui.QApplication.translate(context, text, disambig)
+
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -28,13 +30,13 @@ class Ui_MainWindow(object):
         MainWindow.setEnabled(True)
         MainWindow.resize(1071, 1440)
         MainWindow.setStyleSheet(_fromUtf8("QScrollBar:vertical\n"
-" {\n"
-"     width: 80px;\n"
-" }"))
+                                           " {\n"
+                                           "     width: 80px;\n"
+                                           " }"))
         self.ok = QtGui.QWidget(MainWindow)
         self.ok.setObjectName(_fromUtf8("ok"))
         self.stackedwidget = QtGui.QStackedWidget(self.ok)
-        self.stackedwidget.setGeometry(QtCore.QRect(0, 0, 1072, 1440))
+        self.stackedwidget.setGeometry(QtCore.QRect(0, 0, 1072, 1350))
         self.stackedwidget.setStyleSheet(_fromUtf8(""))
         self.stackedwidget.setObjectName(_fromUtf8("stackedwidget"))
         self.centralwidget = QtGui.QWidget()
@@ -60,8 +62,8 @@ class Ui_MainWindow(object):
         self.bg1 = QtGui.QFrame(self.centralwidget)
         self.bg1.setGeometry(QtCore.QRect(0, 0, 1071, 1440))
         self.bg1.setStyleSheet(_fromUtf8("QWidget{\n"
-"   background-color: white\n"
-"}"))
+                                         "   background-color: white\n"
+                                         "}"))
         self.bg1.setFrameShape(QtGui.QFrame.StyledPanel)
         self.bg1.setFrameShadow(QtGui.QFrame.Raised)
         self.bg1.setObjectName(_fromUtf8("bg1"))
@@ -71,66 +73,18 @@ class Ui_MainWindow(object):
         self.image.setPixmap(QtGui.QPixmap(_fromUtf8("../../../Downloads/download.png")))
         self.image.setScaledContents(False)
         self.image.setObjectName(_fromUtf8("image"))
-        self.pagedock = QtGui.QWidget(self.bg1)
-        self.pagedock.setGeometry(QtCore.QRect(0, 1345, 1071, 91))
-        self.pagedock.setObjectName(_fromUtf8("pagedock"))
-        self.widget_2 = QtGui.QWidget(self.pagedock)
-        self.widget_2.setGeometry(QtCore.QRect(0, 0, 1071, 91))
-        self.widget_2.setStyleSheet(_fromUtf8("QWidget{\n"
-"background-color: white;\n"
-"border : 2px solid #000000\n"
-"}"))
-        self.widget_2.setObjectName(_fromUtf8("widget_2"))
-        self.pagecount = QtGui.QLabel(self.widget_2)
-        self.pagecount.setGeometry(QtCore.QRect(22, 5, 111, 61))
-        self.pagecount.setStyleSheet(_fromUtf8("QWidget{\n"
-"border: 0px\n"
-"}"))
-        self.pagecount.setObjectName(_fromUtf8("pagecount"))
-        self.pageslider = QtGui.QSlider(self.widget_2)
-        self.pageslider.setGeometry(QtCore.QRect(160, 31, 891, 21))
-        self.pageslider.setStyleSheet(_fromUtf8("QWidget{\n"
-"   border : 0px\n"
-"}\n"
-"QSlider::groove:horizontal { \n"
-"    background-color: white;\n"
-"    border: 1px solid #424242; \n"
-"    height: 15px; \n"
-"    border-radius: 4px;\n"
-"}\n"
-"\n"
-"QSlider::handle:horizontal { \n"
-"    background-color: black; \n"
-"    border: 2px solid black; \n"
-"    width: 16px; \n"
-"    height: 30px; \n"
-"    line-height: 20px; \n"
-"    margin-top: -5px; \n"
-"    margin-bottom: -5px; \n"
-"    border-radius: 10px; \n"
-"}\n"
-"\n"
-"QSlider::handle:horizontal:hover { \n"
-"    border-radius: 10px;\n"
-"}"))
-        self.pageslider.setMaximum(24)
-        self.pageslider.setPageStep(1)
-        self.pageslider.setOrientation(QtCore.Qt.Horizontal)
-        self.pageslider.setTickPosition(QtGui.QSlider.TicksAbove)
-        self.pageslider.setTickInterval(1)
-        self.pageslider.setObjectName(_fromUtf8("pageslider"))
         self.dockbar = QtGui.QWidget(self.centralwidget)
         self.dockbar.setEnabled(True)
         self.dockbar.setGeometry(QtCore.QRect(0, 0, 1071, 101))
         self.dockbar.setStyleSheet(_fromUtf8("QWidget{\n"
-"    background-color : white;\n"
-"    border : 2px solid #000000\n"
-"}\n"
-"\n"
-"QPushButton{\n"
-"    background-color: transparent;\n"
-"    border : 0;\n"
-"}"))
+                                             "    background-color : white;\n"
+                                             "    border : 2px solid #000000\n"
+                                             "}\n"
+                                             "\n"
+                                             "QPushButton{\n"
+                                             "    background-color: transparent;\n"
+                                             "    border : 0;\n"
+                                             "}"))
         self.dockbar.setObjectName(_fromUtf8("dockbar"))
         self.layoutWidget = QtGui.QWidget(self.dockbar)
         self.layoutWidget.setGeometry(QtCore.QRect(2, 2, 1071, 102))
@@ -201,20 +155,69 @@ class Ui_MainWindow(object):
         self.homebt.setIconSize(QtCore.QSize(60, 60))
         self.homebt.setObjectName(_fromUtf8("homebt"))
         self.horizontalLayout_5.addWidget(self.homebt)
+        self.pagedock = QtGui.QWidget(self.centralwidget)
+        self.pagedock.setGeometry(QtCore.QRect(0, 1259, 1071, 91))
+        self.pagedock.setObjectName(_fromUtf8("pagedock"))
+        self.widget_2 = QtGui.QWidget(self.pagedock)
+        self.widget_2.setGeometry(QtCore.QRect(0, 0, 1071, 91))
+        self.widget_2.setStyleSheet(_fromUtf8("QWidget{\n"
+                                              "background-color: white;\n"
+                                              "border : 2px solid #000000\n"
+                                              "}"))
+        self.widget_2.setObjectName(_fromUtf8("widget_2"))
+        self.pagecount = QtGui.QLabel(self.widget_2)
+        self.pagecount.setGeometry(QtCore.QRect(22, 5, 111, 61))
+        self.pagecount.setStyleSheet(_fromUtf8("QWidget{\n"
+                                               "border: 0px\n"
+                                               "}"))
+        self.pagecount.setObjectName(_fromUtf8("pagecount"))
+        self.pageslider = QtGui.QSlider(self.widget_2)
+        self.pageslider.setGeometry(QtCore.QRect(160, 31, 891, 21))
+        self.pageslider.setStyleSheet(_fromUtf8("QWidget{\n"
+                                                "   border : 0px\n"
+                                                "}\n"
+                                                "QSlider::groove:horizontal { \n"
+                                                "    background-color: white;\n"
+                                                "    border: 1px solid #424242; \n"
+                                                "    height: 15px; \n"
+                                                "    border-radius: 4px;\n"
+                                                "}\n"
+                                                "\n"
+                                                "QSlider::handle:horizontal { \n"
+                                                "    background-color: black; \n"
+                                                "    border: 2px solid black; \n"
+                                                "    width: 16px; \n"
+                                                "    height: 30px; \n"
+                                                "    line-height: 20px; \n"
+                                                "    margin-top: -5px; \n"
+                                                "    margin-bottom: -5px; \n"
+                                                "    border-radius: 10px; \n"
+                                                "}\n"
+                                                "\n"
+                                                "QSlider::handle:horizontal:hover { \n"
+                                                "    border-radius: 10px;\n"
+                                                "}"))
+        self.pageslider.setMaximum(24)
+        self.pageslider.setPageStep(1)
+        self.pageslider.setOrientation(QtCore.Qt.Horizontal)
+        self.pageslider.setTickPosition(QtGui.QSlider.TicksAbove)
+        self.pageslider.setTickInterval(1)
+        self.pageslider.setObjectName(_fromUtf8("pageslider"))
         self.bg1.raise_()
         self.dockbutton.raise_()
         self.next.raise_()
         self.prev.raise_()
+        self.pagedock.raise_()
         self.dockbar.raise_()
         self.stackedwidget.addWidget(self.centralwidget)
         self.centralwidget2 = QtGui.QWidget()
         self.centralwidget2.setEnabled(True)
         self.centralwidget2.setObjectName(_fromUtf8("centralwidget2"))
         self.bg2 = QtGui.QWidget(self.centralwidget2)
-        self.bg2.setGeometry(QtCore.QRect(0, -10, 1081, 1440))
+        self.bg2.setGeometry(QtCore.QRect(0, -10, 1081, 1301))
         self.bg2.setStyleSheet(_fromUtf8("QWidget{\n"
-"   background-color: white\n"
-"}"))
+                                         "   background-color: white\n"
+                                         "}"))
         self.bg2.setObjectName(_fromUtf8("bg2"))
         self.searchlist = QtGui.QListWidget(self.bg2)
         self.searchlist.setGeometry(QtCore.QRect(0, 240, 1071, 691))
@@ -226,8 +229,8 @@ class Ui_MainWindow(object):
         font.setPointSize(8)
         self.searchButton.setFont(font)
         self.searchButton.setStyleSheet(_fromUtf8("QPushButton{\n"
-"   border: 2px solid #000000\n"
-"}"))
+                                                  "   border: 2px solid #000000\n"
+                                                  "}"))
         self.searchButton.setObjectName(_fromUtf8("searchButton"))
         self.mangaSearch = QtGui.QLineEdit(self.bg2)
         self.mangaSearch.setGeometry(QtCore.QRect(20, 120, 1031, 61))
@@ -239,13 +242,13 @@ class Ui_MainWindow(object):
         self.widget_3 = QtGui.QWidget(self.bg2)
         self.widget_3.setGeometry(QtCore.QRect(1, 10, 1070, 101))
         self.widget_3.setStyleSheet(_fromUtf8("QWidget{\n"
-"border: 2px solid #000000\n"
-"}\n"
-"\n"
-"QPushButton{\n"
-" border : 0px;\n"
-" background-color: transparent\n"
-"}"))
+                                              "border: 2px solid #000000\n"
+                                              "}\n"
+                                              "\n"
+                                              "QPushButton{\n"
+                                              " border : 0px;\n"
+                                              " background-color: transparent\n"
+                                              "}"))
         self.widget_3.setObjectName(_fromUtf8("widget_3"))
         self.layoutWidget1 = QtGui.QWidget(self.widget_3)
         self.layoutWidget1.setGeometry(QtCore.QRect(-3, 0, 1071, 102))
@@ -255,9 +258,9 @@ class Ui_MainWindow(object):
         self.homebt2 = QtGui.QPushButton(self.layoutWidget1)
         self.homebt2.setMinimumSize(QtCore.QSize(0, 90))
         self.homebt2.setStyleSheet(_fromUtf8("QPushButton{\n"
-"    background-color:transparent\n"
-"\n"
-"}"))
+                                             "    background-color:transparent\n"
+                                             "\n"
+                                             "}"))
         self.homebt2.setText(_fromUtf8(""))
         self.homebt2.setIcon(icon6)
         self.homebt2.setIconSize(QtCore.QSize(55, 55))
@@ -291,13 +294,13 @@ class Ui_MainWindow(object):
         self.widget = QtGui.QWidget(self.bg2)
         self.widget.setGeometry(QtCore.QRect(0, 932, 1071, 351))
         self.widget.setStyleSheet(_fromUtf8("QPushButton{\n"
-"border : 0;\n"
-"background-color: transparent;\n"
-"}\n"
-"\n"
-"QWidget{\n"
-"background-color: white;\n"
-"}"))
+                                            "border : 0;\n"
+                                            "background-color: transparent;\n"
+                                            "}\n"
+                                            "\n"
+                                            "QWidget{\n"
+                                            "background-color: white;\n"
+                                            "}"))
         self.widget.setObjectName(_fromUtf8("widget"))
         self.layoutWidget2 = QtGui.QWidget(self.widget)
         self.layoutWidget2.setGeometry(QtCore.QRect(0, 10, 1061, 341))
@@ -489,19 +492,19 @@ class Ui_MainWindow(object):
         self.bg3 = QtGui.QWidget(self.centralwidget3)
         self.bg3.setGeometry(QtCore.QRect(-1, -1, 1081, 1301))
         self.bg3.setStyleSheet(_fromUtf8("QWidget{\n"
-"   background-color: white\n"
-"}"))
+                                         "   background-color: white\n"
+                                         "}"))
         self.bg3.setObjectName(_fromUtf8("bg3"))
         self.widget_4 = QtGui.QWidget(self.bg3)
         self.widget_4.setGeometry(QtCore.QRect(1, 1, 1071, 83))
         self.widget_4.setStyleSheet(_fromUtf8("QWidget{\n"
-"border: 2px solid #000000\n"
-"}\n"
-"\n"
-"QPushButton{\n"
-"  border: 0px;\n"
-"  background-color : transparent\n"
-"}"))
+                                              "border: 2px solid #000000\n"
+                                              "}\n"
+                                              "\n"
+                                              "QPushButton{\n"
+                                              "  border: 0px;\n"
+                                              "  background-color : transparent\n"
+                                              "}"))
         self.widget_4.setObjectName(_fromUtf8("widget_4"))
         self.layoutWidget3 = QtGui.QWidget(self.widget_4)
         self.layoutWidget3.setGeometry(QtCore.QRect(0, 0, 1071, 82))
@@ -549,8 +552,8 @@ class Ui_MainWindow(object):
         self.bookmarkbt2 = QtGui.QPushButton(self.bg3)
         self.bookmarkbt2.setGeometry(QtCore.QRect(30, 250, 361, 61))
         self.bookmarkbt2.setStyleSheet(_fromUtf8("QWidget{\n"
-"   border: 2px solid #000000;\n"
-"}"))
+                                                 "   border: 2px solid #000000;\n"
+                                                 "}"))
         self.bookmarkbt2.setObjectName(_fromUtf8("bookmarkbt2"))
         self.bg3.raise_()
         self.infoimage.raise_()
@@ -558,19 +561,19 @@ class Ui_MainWindow(object):
         self.stackedwidget.addWidget(self.centralwidget3)
         self.centralwidget4 = QtGui.QWidget()
         self.centralwidget4.setStyleSheet(_fromUtf8("QWidget{\n"
-"    background-color: white;\n"
-"}"))
+                                                    "    background-color: white;\n"
+                                                    "}"))
         self.centralwidget4.setObjectName(_fromUtf8("centralwidget4"))
         self.widget_5 = QtGui.QWidget(self.centralwidget4)
         self.widget_5.setGeometry(QtCore.QRect(1, 0, 1069, 81))
         self.widget_5.setStyleSheet(_fromUtf8("QWidget{\n"
-"border: 2px solid #000000\n"
-"}\n"
-"\n"
-"QPushButton{\n"
-"  border: 0px;\n"
-"  background-color : transparent\n"
-"}"))
+                                              "border: 2px solid #000000\n"
+                                              "}\n"
+                                              "\n"
+                                              "QPushButton{\n"
+                                              "  border: 0px;\n"
+                                              "  background-color : transparent\n"
+                                              "}"))
         self.widget_5.setObjectName(_fromUtf8("widget_5"))
         self.layoutWidget4 = QtGui.QWidget(self.widget_5)
         self.layoutWidget4.setGeometry(QtCore.QRect(-2, 0, 1081, 82))
@@ -617,20 +620,20 @@ class Ui_MainWindow(object):
         font.setPointSize(12)
         self.no_bookmark.setFont(font)
         self.no_bookmark.setStyleSheet(_fromUtf8("QLabel{\n"
-"  text-align: center;\n"
-"}"))
+                                                 "  text-align: center;\n"
+                                                 "}"))
         self.no_bookmark.setAlignment(QtCore.Qt.AlignCenter)
         self.no_bookmark.setObjectName(_fromUtf8("no_bookmark"))
         self.stackedwidget.addWidget(self.centralwidget4)
         self.brightness_window = QtGui.QWidget(self.ok)
         self.brightness_window.setGeometry(QtCore.QRect(10, 350, 1050, 311))
         self.brightness_window.setStyleSheet(_fromUtf8("QWidget{\n"
-"background-color : white;\n"
-" border : 2px solid #000000 \n"
-"}\n"
-"QPushButton{\n"
-"  border : 2px solid #000000\n"
-"}"))
+                                                       "background-color : white;\n"
+                                                       " border : 2px solid #000000 \n"
+                                                       "}\n"
+                                                       "QPushButton{\n"
+                                                       "  border : 2px solid #000000\n"
+                                                       "}"))
         self.brightness_window.setObjectName(_fromUtf8("brightness_window"))
         self.plusbrightness = QtGui.QPushButton(self.brightness_window)
         self.plusbrightness.setGeometry(QtCore.QRect(520, 150, 301, 61))
@@ -638,28 +641,28 @@ class Ui_MainWindow(object):
         self.brightnessslider = QtGui.QSlider(self.brightness_window)
         self.brightnessslider.setGeometry(QtCore.QRect(40, 90, 981, 22))
         self.brightnessslider.setStyleSheet(_fromUtf8("QWidget{\n"
-"border :0}\n"
-"QSlider::groove:horizontal { \n"
-"    background-color: white;\n"
-"    border: 1px solid #424242; \n"
-"    height: 10px; \n"
-"    border-radius: 4px;\n"
-"}\n"
-"\n"
-"QSlider::handle:horizontal { \n"
-"    background-color: black; \n"
-"    border: 2px solid black; \n"
-"    width: 16px; \n"
-"    height: 20px; \n"
-"    line-height: 20px; \n"
-"    margin-top: -5px; \n"
-"    margin-bottom: -5px; \n"
-"    border-radius: 10px; \n"
-"}\n"
-"\n"
-"QSlider::handle:horizontal:hover { \n"
-"    border-radius: 10px;\n"
-"}"))
+                                                      "border :0}\n"
+                                                      "QSlider::groove:horizontal { \n"
+                                                      "    background-color: white;\n"
+                                                      "    border: 1px solid #424242; \n"
+                                                      "    height: 10px; \n"
+                                                      "    border-radius: 4px;\n"
+                                                      "}\n"
+                                                      "\n"
+                                                      "QSlider::handle:horizontal { \n"
+                                                      "    background-color: black; \n"
+                                                      "    border: 2px solid black; \n"
+                                                      "    width: 16px; \n"
+                                                      "    height: 20px; \n"
+                                                      "    line-height: 20px; \n"
+                                                      "    margin-top: -5px; \n"
+                                                      "    margin-bottom: -5px; \n"
+                                                      "    border-radius: 10px; \n"
+                                                      "}\n"
+                                                      "\n"
+                                                      "QSlider::handle:horizontal:hover { \n"
+                                                      "    border-radius: 10px;\n"
+                                                      "}"))
         self.brightnessslider.setMaximum(24)
         self.brightnessslider.setOrientation(QtCore.Qt.Horizontal)
         self.brightnessslider.setTickPosition(QtGui.QSlider.TicksAbove)
@@ -677,7 +680,7 @@ class Ui_MainWindow(object):
         font.setPointSize(8)
         self.label.setFont(font)
         self.label.setStyleSheet(_fromUtf8("QWidget{\n"
-"border :0}"))
+                                           "border :0}"))
         self.label.setObjectName(_fromUtf8("label"))
         MainWindow.setCentralWidget(self.ok)
         self.actionExit = QtGui.QAction(MainWindow)
@@ -690,7 +693,7 @@ class Ui_MainWindow(object):
         self.actionHome.setObjectName(_fromUtf8("actionHome"))
 
         self.retranslateUi(MainWindow)
-        self.stackedwidget.setCurrentIndex(3)
+        self.stackedwidget.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
@@ -742,4 +745,3 @@ class Ui_MainWindow(object):
         self.actionComics.setText(_translate("MainWindow", "Comics", None))
         self.actionReader.setText(_translate("MainWindow", "Reader", None))
         self.actionHome.setText(_translate("MainWindow", "Home", None))
-
