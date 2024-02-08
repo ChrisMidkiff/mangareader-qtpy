@@ -340,6 +340,9 @@ QPushButton{
             <height>50</height>
            </size>
           </property>
+          <property name="styleSheet">
+            <string notr="true"/>
+          </property>
          </widget>
         </item>
         <item>
@@ -1234,7 +1237,7 @@ background-color: white;
        <bool>true</bool>
       </property>
      </widget>
-     <widget class="QListView" name="infochapters">
+     <widget class="QListWidget" name="infochapters">
       <property name="geometry">
        <rect>
         <x>0</x>
@@ -1571,15 +1574,18 @@ QPushButton{
        </layout>
       </widget>
      </widget>
-     <widget class="QListView" name="bookmarklist">
+     <widget class="QListWidget" name="bookmarklist">
       <property name="geometry">
        <rect>
         <x>0</x>
         <y>140</y>
         <width>1071</width>
-        <height>1141</height>
+        <height>1400</height>
        </rect>
       </property>
+      <property name="styleSheet">
+        <string notr="true"/>
+       </property>
      </widget>
      <widget class="QLabel" name="label_2">
       <property name="geometry">

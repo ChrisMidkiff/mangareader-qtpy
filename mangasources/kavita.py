@@ -31,7 +31,7 @@ def image_lists(url):
         images.append('http://192.168.1.94:5000/api/reader/image?apiKey=e9cedc02-5b82-4269-9fd4-53fa86e05d88&chapterId=' + chapterId + '&page=' + str(x))
     nextElement = None
     prevElement = None
-    r = kavitaSession.get('http://192.168.1.94:5000/api/reader/chapter-info?includeDimensions=true&chapterId=' +
+    r = kavitaSession.get('http://192.168.1.94:5000/api/reader/prev-chapter?seriesId=' +
                           seriesId + '&volumeId=' + volumeId + '&currentChapterId=' + chapterId)
     if r.text != '-1':
         prevElement = {'href': 'http://192.168.1.94:5000/api/reader/chapter-info?includeDimensions=true&chapterId=' + r.text}
@@ -75,9 +75,10 @@ def processing_chapters(url):
     for v in r.json()['volumes']:
         for c in v['chapters']:
             c['title'] = c['titleName']
+            c['number'] = v['number']
             chapters.append(c)
     data = []
-    chapters = sorted(chapters, key=lambda x: x['title'])
+    chapters = sorted(chapters, key=lambda x: x['number'])
     for chapter in chapters:
         chapterId = str(chapter['id'])
         meta = kavitaSession.get('http://192.168.1.94:5000/api/series/chapter-metadata?chapterId=' + chapterId)

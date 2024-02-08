@@ -43,6 +43,8 @@ except Exception as e:
     import mangareader as mangareader
     print(e) 
     pass            
+
+imageCache = {}
 class TestListModel(QtCore.QAbstractListModel):
     def __init__(self, parent=None):
         QtCore.QAbstractListModel.__init__(self, parent)
@@ -57,32 +59,33 @@ class TestListModel(QtCore.QAbstractListModel):
 
     def data(self, index, role):
         if role == QtCore.Qt.DisplayRole:
-            if not self.list.indexWidget(index):
-                url = self.results[index.row() ].getUrl()
-                title = self.results[index.row() ].getTitle()
-                author = self.results[index.row() ].getAuthor()
-                icon = ""
-                myQCustomQWidget = SearchCardView()
-                myQCustomQWidget.setTextUp(title)
-                myQCustomQWidget.setTextDown(author)
-                myQCustomQWidget.setIcon(icon)
-                myQCustomQWidget.setUrl(url)
-                myQCustomQWidget.setIndex(index.row() -1)
-                print(index.row())
 
-                # # Create QListWidgetItem
-                # myQListWidgetItem2 = QtGui.QListWidgetItem(self.list)
-                # print(index.row() -1)
-                # myQListWidgetItem2.setData(2, (index.row() -1,url)) 
-                # # Set size hint
-                # myQListWidgetItem2.setSizeHint(myQCustomQWidget.sizeHint())
-                # # Add QListWidgetItem into QListWidget
-                # self.list.addItem(myQListWidgetItem2)
-                self.list.setIndexWidget(index, myQCustomQWidget)
+            url = self.results[index.row() ].getUrl()
+            title = self.results[index.row() ].getTitle()
+            author = self.results[index.row() ].getAuthor()
+            icon = self.results[index.row() ].getIcon()
+            myQCustomQWidget = SearchCardView()
+            myQCustomQWidget.setTextUp(title)
+            myQCustomQWidget.setTextDown(author)
+            myQCustomQWidget.setIcon(icon)
+            myQCustomQWidget.setUrl(url)
+            myQCustomQWidget.setIndex(index.row() -1)
+            print(index.row())
+
+            # Create QListWidgetItem
+            myQListWidgetItem = QtGui.QListWidgetItem(self.chapterlist)
+            data = (url , title, author, icon)
+            myQListWidgetItem.setData(1, data)
+            # Set size hint
+            myQListWidgetItem.setSizeHint(myQCustomQWidget.sizeHint())
+            # Add QListWidgetItem into QListWidget
+            self.list.setIndexWidget(index, myQCustomQWidget)
+            self.chapterlist.addItem(myQListWidgetItem)
+            self.chapterlist.setItemWidget(myQListWidgetItem, myQCustomQWidget)
             return QtCore.QVariant()
 
         if role == QtCore.Qt.SizeHintRole:
-            return QtCore.QSize(1070, 150)
+            return QtCore.QSize(1070, 100)
 
     def columnCount(self, index):
         pass
@@ -101,28 +104,28 @@ class TestListModel2(QtCore.QAbstractListModel):
 
     def data(self, index, role):
         if role == QtCore.Qt.DisplayRole:
-            if not self.list.indexWidget(index):
+            item = self.results[index.row()]
+            title = item['title']
+            author = item['author']
+            icon = item['image']
+            myQCustomQWidget = SearchCardView()
+            myQCustomQWidget.setTextUp(title)
+            myQCustomQWidget.setTextDown(author)
+            myQCustomQWidget.setIcon(icon)
+            myQCustomQWidget.setUrl("")
+            myQCustomQWidget.setIndex(index.row() -1)
+            print(index.row())
 
-                title = str(self.results[index.row()][:str(self.results[index.row()]).rfind("y:_$W|~_:q")])
-                url = self.results[index.row()][len(title+"y:_$W|~_:q"):]
-                icon = ""
-                myQCustomQWidget = SearchCardView()
-                myQCustomQWidget.setTextUp(title)
-                myQCustomQWidget.setTextDown(url)
-                myQCustomQWidget.setIcon(icon)
-                myQCustomQWidget.setUrl("")
-                myQCustomQWidget.setIndex(index.row() -1)
-                print(index.row())
-
-                # # Create QListWidgetItem
-                # myQListWidgetItem2 = QtGui.QListWidgetItem(self.list)
-                # print(index.row() -1)
-                # myQListWidgetItem2.setData(2, (index.row() -1,url)) 
-                # # Set size hint
-                # myQListWidgetItem2.setSizeHint(myQCustomQWidget.sizeHint())
-                # # Add QListWidgetItem into QListWidget
-                # self.list.addItem(myQListWidgetItem2)
-                self.list.setIndexWidget(index, myQCustomQWidget)
+            # Create QListWidgetItem
+            myQListWidgetItem = QtGui.QListWidgetItem(self.bookmarklist)
+            data = ('' , title, author, icon)
+            myQListWidgetItem.setData(1, data)
+            # Set size hint
+            myQListWidgetItem.setSizeHint(myQCustomQWidget.sizeHint())
+            # Add QListWidgetItem into QListWidget
+            self.list.setIndexWidget(index, myQCustomQWidget)
+            self.bookmarklist.addItem(myQListWidgetItem)
+            self.bookmarklist.setItemWidget(myQListWidgetItem, myQCustomQWidget)
             return QtCore.QVariant()
 
         if role == QtCore.Qt.SizeHintRole:
@@ -157,17 +160,17 @@ class MangaPageWorker(QtCore.QObject):
     @QtCore.pyqtSlot()
     def processing_image( self, images, page, url):
         #start = time.time()
-        hdr = {'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.64 Safari/537.11',
-        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-        'Accept-Charset': 'ISO-8859-1,utf-8;q=0.7,*;q=0.3',
-        'Accept-Encoding': 'none',
-        'Accept-Language': 'en-US,en;q=0.8',
-        'Connection': 'keep-alive', 'Referer': 'http://www.nettruyentop.com/'}
         image0 = None
-        image0 = requests.get(images[page], timeout = 15, stream=True)
         image = QtGui.QImage()
-        image.loadFromData(image0.content)
-        self.loadimage.emit(image, url, page) 
+        if page in imageCache.keys():
+           print('cache hit')
+           image = imageCache[page]
+        else:
+            print('cache miss')
+            image0 = requests.get(images[page], timeout = 15, stream=True)
+            image.loadFromData(image0.content)
+            imageCache[page] = image
+        self.loadimage.emit(image, url, page)
         #end = time.time()
         #print(end - start) 
 
@@ -194,6 +197,8 @@ class Ui_MainWindowImpl(mangareader.Ui_MainWindow):
     tmpmanga = ""
     selmanga = ""
     currentsource = "kavita"
+    currItem = {}
+    
     url = ''
     hdr = {'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.64 Safari/537.11',
         'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
@@ -323,16 +328,32 @@ class Ui_MainWindowImpl(mangareader.Ui_MainWindow):
         self.comicselector.addItems(mangasources.sourcelist.manga_sites())
         self.comicselector.currentIndexChanged.connect(self.new_sources)
         try:
-         with open('bookmarks.txt') as f:
-           self.bookmarks = f.read().splitlines()
-         model = TestListModel2(self.bookmarklist)
-         model.inputData(self.bookmarks)
-         self.bookmarklist.setModel(model)       
-         if len(self.bookmarks) > 0:
-            self.no_bookmark.setVisible(False)
-         self.bookmarklist.clicked.connect(self.saveRes3)
+            self.bookmarks = json.load(open('bookmarks.json'))
+            for item in self.bookmarks:
+                title = item['title']
+                author = item['author']
+                icon = item['image']
+                url = item['url']
+                myQCustomQWidget = SearchCardView()
+                myQCustomQWidget.setTextUp(title)
+                myQCustomQWidget.setTextDown(author)
+                myQCustomQWidget.setIcon(icon)
+                myQCustomQWidget.setUrl(url)
+                # Create QListWidgetItem
+                myQListWidgetItem = QtGui.QListWidgetItem(self.bookmarklist)
+                data = (url , title, author, icon)
+                myQListWidgetItem.setData(1, data)
+                # Set size hint
+                myQListWidgetItem.setSizeHint(myQCustomQWidget.sizeHint())
+                # Add QListWidgetItem into QListWidget
+                self.bookmarklist.addItem(myQListWidgetItem)
+                self.bookmarklist.setItemWidget(myQListWidgetItem, myQCustomQWidget)
+            #self.bookmarklist.setModel(model)       
+            if len(self.bookmarks) > 0:
+                self.no_bookmark.setVisible(False)
+            self.bookmarklist.clicked.connect(self.saveRes3)
         except: 
-         pass      
+            pass      
         
         if self.url == "":
            self.readerbt.setVisible(False)
@@ -345,10 +366,8 @@ class Ui_MainWindowImpl(mangareader.Ui_MainWindow):
         self.querysearch()
 
     def showdock(self):
-        page = self.url[:self.url.rfind("/")]
-        name = self.selectedname
-        combined = name +"y:_$W|~_:q"+page
-        if combined in self.bookmarks:
+        item = self.currItem.copy()
+        if item in self.bookmarks:
          icon5 = QtGui.QIcon()
          icon5.addPixmap(QtGui.QPixmap(_fromUtf8("bookmarkoff.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
          self.bookmarkbt.setIcon(icon5)
@@ -717,8 +736,9 @@ class Ui_MainWindowImpl(mangareader.Ui_MainWindow):
         image = QtGui.QImage()
         image.loadFromData(infoimage0.content)
         self.infoimage.setPixmap(QtGui.QPixmap(image)) 
-        combined = title +"y:_$W|~_:q"+self.tmpurl
-        if combined in self.bookmarks:
+        item = {'title':title,'author':author,'url':url,'image':icon}
+        self.currItem = item.copy()
+        if item in self.bookmarks:
          self.bookmarkbt2.setText("Remove bookmarks")
         else: 
          self.bookmarkbt2.setText("Add to bookmarks")
@@ -773,9 +793,25 @@ class Ui_MainWindowImpl(mangareader.Ui_MainWindow):
         print('ok')
         if len(results) != 0:
             self.tmp_index = -1
-            model = TestListModel(self.infochapters)
-            model.inputData(results)
-            self.infochapters.setModel(model)   
+            for item in results:
+                title = item.getTitle()
+                author = item.getAuthor()
+                icon = item.getIcon()
+                url = item.getUrl()
+                myQCustomQWidget = SearchCardView()
+                myQCustomQWidget.setTextUp(title)
+                myQCustomQWidget.setTextDown(author)
+                myQCustomQWidget.setIcon(icon)
+                myQCustomQWidget.setUrl(url)
+                # Create QListWidgetItem
+                myQListWidgetItem = QtGui.QListWidgetItem(self.infochapters)
+                data = (url , title, author, icon)
+                myQListWidgetItem.setData(1, data)
+                # Set size hint
+                myQListWidgetItem.setSizeHint(myQCustomQWidget.sizeHint())
+                # Add QListWidgetItem into QListWidget
+                self.infochapters.addItem(myQListWidgetItem)
+                self.infochapters.setItemWidget(myQListWidgetItem, myQCustomQWidget)  
             self.infochapters.clicked.connect(self.saveRes2)
 
     @QtCore.pyqtSlot(QtGui.QImage, str, int)
@@ -788,12 +824,15 @@ class Ui_MainWindowImpl(mangareader.Ui_MainWindow):
         print("il:" + str(end-start))       
 
 
-    def saveRes2(self, index): 
-        self.launchreader(self.infochapters.model().results[index.row()].getUrl())
+    def saveRes2(self, item):
+        data = item.data(1).toPyObject()
+        url =  data[0]
+        self.launchreader(url)
 
     def saveRes3(self,index):
-        title = self.bookmarklist.model().results[index.row()][:str(self.bookmarklist.model().results[index.row()]).rfind("y:_$W|~_:q")]
-        url = self.bookmarklist.model().results[index.row()][len(title+"y:_$W|~_:q"):]
+        self.currItem = self.bookmarks[index.row()]
+        title = self.currItem['title']
+        url = self.currItem['url']
         print("oof"+url)
         self.mangainfo2(url,title)
 
@@ -821,6 +860,7 @@ class Ui_MainWindowImpl(mangareader.Ui_MainWindow):
         # prev_element = soup.find('a', attrs={'class':"navi-change-chapter-btn-prev a-h"})
         # next_element = soup.find('a', attrs={'class':"navi-change-chapter-btn-next a-h"})
         result = AbstractMangaSource.AbstractMangaSource.listchapterimages(url)
+        imageCache = {}
         self.selmanga = self.tmpurl
         self.images = result[0]
         prev_element = result[1]
@@ -840,42 +880,35 @@ class Ui_MainWindowImpl(mangareader.Ui_MainWindow):
         image = QtGui.QImage()
         image.loadFromData(self.image0.content)
         self.image0.close()
+        imageCache[self.page] = image
         self.image.setPixmap(QtGui.QPixmap(image).scaled(self.image.size(), QtCore.Qt.KeepAspectRatio))  
         self.stackedwidget.setCurrentIndex(0)  
 
 
     def addbookmark(self):
-        page = self.selmanga
-        name = self.selectedname
-        combined = name +"y:_$W|~_:q"+page
-        if combined in self.bookmarks:
+        item = self.currItem.copy()
+        if item in self.bookmarks:
          icon5 = QtGui.QIcon()
          icon5.addPixmap(QtGui.QPixmap(_fromUtf8("bookmarkoff.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
          self.bookmarkbt.setIcon(icon5)
-         self.bookmarks.remove(combined)
+         self.bookmarks.remove(item)
         else: 
          icon5 = QtGui.QIcon()
          icon5.addPixmap(QtGui.QPixmap(_fromUtf8("bookmarkon.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
          self.bookmarkbt.setIcon(icon5)
-         self.bookmarks.append(combined)
+         self.bookmarks.append(item)
 
     def addbookmark2(self):
-        page = self.tmpurl
-        name = self.infotext.text()
-        print(page)
-        combined = name +"y:_$W|~_:q"+page
-        if combined in self.bookmarks:
+        item = self.currItem.copy()
+        if item in self.bookmarks:
          self.bookmarkbt2.setText("Add to bookmarks")
-         self.bookmarks.remove(combined)
+         self.bookmarks.remove(item)
         else: 
          self.bookmarkbt2.setText("Remove bookmarks")
-         self.bookmarks.append(combined)
+         self.bookmarks.append(item)
 
     def actionQuit_fun(self):
-       with open('bookmarks.txt', 'w') as textfile:
-        for element in self.bookmarks:
-         textfile.write(element + "\n")
-        textfile.close()
+       json.dump(self.bookmarks,open('bookmarks.json', 'w'))
        quit()   
 
     def searchpage_fun(self):
