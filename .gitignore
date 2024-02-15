@@ -1,3 +1,4 @@
 demo_cache.sqlite
 *.pyc
 *.pyc
+mangasources/creds.py

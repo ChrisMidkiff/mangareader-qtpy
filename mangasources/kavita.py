@@ -3,12 +3,13 @@ import requests
 from searchclass import searchclass
 import json
 import urllib
+from creds import kavitaUser, kavitaKey
 kavitaSession = requests.Session()
 
 
 def login():
     r = kavitaSession.post('http://192.168.1.94:5000/api/Account/login',
-                           json={'apiKey': 'e9cedc02-5b82-4269-9fd4-53fa86e05d88', 'username': 'chris', 'password': 'password'})
+                           json={'apiKey': kavitaKey, 'username': kavitaUser, 'password': 'password'})
     kavitaSession.headers['Authorization'] = 'Bearer ' + r.json()['token']
 
 
@@ -16,7 +17,7 @@ def getmangaiconfromurl(url):
     print('image: ' + url)
     if 'series-detail' in url:
         seriesId = url.split('?seriesId=')[1]
-        url = 'http://192.168.1.94:5000/api/image/series-cover?apiKey=e9cedc02-5b82-4269-9fd4-53fa86e05d88&seriesId=' + seriesId
+        url = f'http://192.168.1.94:5000/api/image/series-cover?apiKey={kavitaKey}&seriesId={seriesId}'
     return url
 
 
@@ -28,7 +29,7 @@ def image_lists(url):
     volumeId = str(chapter['volumeId'])
     seriesId = str(chapter['seriesId'])
     for x in range(1, pageCount+1):
-        images.append('http://192.168.1.94:5000/api/reader/image?apiKey=e9cedc02-5b82-4269-9fd4-53fa86e05d88&chapterId=' + chapterId + '&page=' + str(x))
+        images.append(f'http://192.168.1.94:5000/api/reader/image?apiKey={kavitaKey}&chapterId={chapterId}&page={x}')
     nextElement = None
     prevElement = None
     r = kavitaSession.get('http://192.168.1.94:5000/api/reader/prev-chapter?seriesId=' +
@@ -60,7 +61,7 @@ def getSearchResult(text):
         newres.setUrl('http://192.168.1.94:5000/api/series/series-detail?seriesId=' + seriesId)
         newres.setTitle(result['name'])
         newres.setAuthor(author)
-        newres.setIcon('http://192.168.1.94:5000/api/image/series-cover?apiKey=e9cedc02-5b82-4269-9fd4-53fa86e05d88&seriesId=' + seriesId)
+        newres.setIcon(f'http://192.168.1.94:5000/api/image/series-cover?apiKey={kavitaKey}&seriesId={seriesId}')
         data.append(newres)
     print(data)
     return data
@@ -90,7 +91,7 @@ def processing_chapters(url):
         newres.setUrl('http://192.168.1.94:5000/api/reader/chapter-info?includeDimensions=true&chapterId=' + chapterId)
         newres.setTitle(chapter['title'])
         newres.setAuthor(author)
-        newres.setIcon('http://192.168.1.94:5000/api/image/chapter-cover?apiKey=e9cedc02-5b82-4269-9fd4-53fa86e05d88&chapterId=' + chapterId)
+        newres.setIcon(f'http://192.168.1.94:5000/api/image/chapter-cover?apiKey={kavitaKey}&chapterId={chapterId}')
         data.append(newres)
     return data
 

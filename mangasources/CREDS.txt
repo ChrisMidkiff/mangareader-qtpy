@@ -1,0 +1,3 @@
+Create a creds.py file for kavita with the following:
+kavitaUser = '<userName>'
+kavitaKey = '<apiKey>'
